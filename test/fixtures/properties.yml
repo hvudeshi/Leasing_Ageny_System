@@ -1,0 +1,39 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  property_id: 1
+  name: property_1
+  property_type: House
+  number_of_units: 3
+  agent: 3
+  size: 1000
+  address: abc 1
+  parking: true
+  pet_allowed: false
+  number_of_rooms: 3
+  number_of_bathrooms: 3
+  laundry: true
+  terms_available: No terms
+  earliest_start_date: 2021-10-19
+  application_fee: 500
+  monthly_rent: 1200
+  occupied_by: 1
+
+two:
+  property_id: 2
+  name: property_2
+  property_type: House
+  number_of_units: 1
+  agent: 2
+  size: 1200
+  address: abc 2
+  parking: true
+  pet_allowed: false
+  number_of_rooms: 4
+  number_of_bathrooms: 4
+  laundry: false
+  terms_available: No terms
+  earliest_start_date: 2021-10-09
+  application_fee: 600
+  monthly_rent: 1400
+  occupied_by: 2

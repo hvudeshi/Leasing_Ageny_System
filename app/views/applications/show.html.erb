@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Application:</strong>
+  <%= @application.application_id %>
+</p>
+
+<p>
+  <strong>Applicant:</strong>
+  <%= @application.applicant_id %>
+</p>
+
+<p>
+  <strong>Property:</strong>
+  <%= @application.property_id %>
+</p>
+
+<p>
+  <strong>Applied date:</strong>
+  <%= @application.applied_date %>
+</p>
+
+<p>
+  <strong>Status:</strong>
+  <%= @application.status %>
+</p>
+
+<%= link_to 'Back', applications_path %>
+

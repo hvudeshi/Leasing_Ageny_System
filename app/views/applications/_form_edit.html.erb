@@ -1,0 +1,43 @@
+<%= form_with(model: application) do |form| %>
+  <% if application.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(application.errors.count, "error") %> prohibited this application from being saved:</h2>
+
+      <ul>
+        <% application.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+
+  <div class="field">
+    <% if current_user.user_type!="Applicant" %>
+      <%= form.hidden_field :applicant_id %>
+    <% else %>
+      <%= form.hidden_field :applicant_id, value: current_user.user_id %>
+    <% end %>
+  </div>
+
+  <div class="field">
+    <%= form.hidden_field :property_id %>
+  </div>
+
+  <div class="field">
+    <%= form.hidden_field :applied_date, value:DateTime.now %>
+  </div>
+
+  <div class="field">
+    <% if current_user.user_type=='Applicant' %>
+      <%= form.text_field :status, type: "hidden", value: "Applied" %>
+    <% else %>
+      <%= form.label :status %>
+      <%= form.select :status, ['Applied', 'Checkin','Rejected', 'Checkout', 'Withdraw'] %>
+    <% end %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

@@ -1,0 +1,54 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Applications</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Application</th>
+      <th>Applicant</th>
+      <th>Property</th>
+      <th>Applied date</th>
+      <th>Status</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+  <% if current_user.user_type == "Agent" %>
+    <% @application_user = Application.find_by_sql(["SELECT * FROM applications where property_id in(select property_id from properties where agent=?)",current_user.user_id])  %>
+  <% elsif  current_user.user_type == "Applicant"%>
+    <% @application_user = Application.find_by_sql(["SELECT * FROM applications WHERE applicant_id = ?",current_user.user_id]) %>
+  <% else %>
+    <% @application_user = @applications %>
+  <% end %>
+    <% @application_user.each do |application| %>
+      <tr>
+        <td><%= application.application_id %></td>
+        <td><%= application.applicant_id %></td>
+        <td><%= application.property_id %></td>
+        <td><%= application.applied_date %></td>
+        <td><%= application.status %></td>
+        <td><%= link_to 'Show', application %></td>
+        <% if(current_user.user_type=='Admin' || current_user.user_type=='Agent') %>
+          <td><%= link_to 'Edit', edit_application_path(application) %></td>
+        <% end %>
+        <% if(current_user.user_type=='Admin' and application.status != 'Checkin') %>
+          <td><%= link_to 'Destroy', application, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <% end %>
+        <% if(current_user.user_type=='Applicant') %>
+            <% if(application.status=='Applied') %>
+                <td><%= link_to 'Withdraw', edit_application_path(application) %></td>
+            <% elsif(application.status=='Checkin') %>
+                <td><%= link_to 'Checkout', edit_application_path(application) %></td>
+            <% end %>
+        <% end %>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Application', new_application_path %>
+<%= link_to 'Back', root_path %>

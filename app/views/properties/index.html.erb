@@ -1,0 +1,79 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Properties</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Property</th>
+      <th>Agent</th>
+      <th>Name</th>
+      <th>Property Type</th>
+      <th>Address</th>
+      <th>Size</th>
+      <th>Parking</th>
+      <th>Pets Allowed</th>
+      <th>Laundry</th>
+      <th>Number of Rooms</th>
+      <th>Number of Bathrooms</th>
+      <th>Terms available</th>
+      <th>Earliest start date</th>
+      <th>Application fee</th>
+      <th>Monthly rent</th>
+      <th>Occupied by</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+  <tr>
+    <% if current_user.user_type == "Agent" %>
+      <% @property_agent = Property.where(agent: current_user.user_id) %>
+    <% elsif  current_user.user_type == "Applicant"%>
+      <% @property_agent = Property.find_by_sql(["SELECT * FROM properties WHERE occupied_by = ? OR occupied_by is null",current_user.user_id]) %>
+    <% else %>
+      <% @property_agent = @properties %>
+    <% end %>
+    <% @property_agent.each do |property| %>
+        <tr>
+          <td><%= property.property_id %></td>
+          <td><%= property.agent %></td>
+          <td><%= property.name %></td>
+          <td><%= property.property_type %></td>
+          <td><%= property.address %></td>
+          <td><%= property.size %></td>
+          <td><%= property.parking %></td>
+          <td><%= property.pet_allowed %></td>
+          <td><%= property.laundry %></td>
+          <td><%= property.number_of_rooms %></td>
+          <td><%= property.number_of_bathrooms %></td>
+          <td><%= property.terms_available %></td>
+          <td><%= property.earliest_start_date %></td>
+          <td><%= property.application_fee %></td>
+          <td><%= property.monthly_rent %></td>
+          <td><%= property.occupied_by %></td>
+          <td><%= link_to 'Show', property %></td>
+
+          <% if(current_user.user_type=='Admin' || current_user.user_type=='Agent') %>
+            <td><%= link_to 'Edit', edit_property_path(property) %></td>
+          <% end %>
+
+          <% if(current_user.user_type=='Admin' || current_user.user_type=='Agent') %>
+            <td><%= link_to 'Destroy', property, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+          <% end %>
+
+
+        </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<% if(current_user.user_type=='Admin' || current_user.user_type=='Agent') %>
+  <%= link_to 'New Property', new_property_path %>
+<% end %>
+
+<%= link_to 'Apply Now', new_application_path %>
+<%= link_to 'Back', root_path %>
+
